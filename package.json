@@ -1,13 +1,15 @@
 {
   "name": "@lennyburdette/federation-serialize",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Serialize a federated schema from Apollo's Schema Registry with directives intact.",
   "exports": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "type": "module",
   "license": "MIT",
   "bin": "./bin/cli.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@apollo/federation": "^0.25.0",
     "@types/jest": "^26.0.23",
@@ -28,5 +30,8 @@
     "build": "esbuild src/index.ts --platform=node --target=node14 --bundle --format=esm --external:fs/promises --external:node:path --external:node:url --banner:js=\"import {createRequire} from 'module';const require = createRequire(import.meta.url);\" --outfile=dist/index.js",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
     "test": "jest"
+  },
+  "dependencies": {
+    "@apollo/rover": "^0.1.0"
   }
 }

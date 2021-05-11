@@ -4,8 +4,6 @@ Utility for serializing federated schemas into a non-recursive data structure
 you can store as JSON. It includes directive data from all subgraphs (which is
 normally lost during supergraph composition.)
 
-Assumes that [rover](https://go.apollo.dev/rover) is in your `PATH`.
-
 ## CLI Usage
 
 ```sh

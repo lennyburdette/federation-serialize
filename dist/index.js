@@ -34715,7 +34715,9 @@ async function fetchSupergraph({
   profile,
   key
 }) {
-  const result = (0, import_execa.default)("rover", [
+  const result = (0, import_execa.default)("yarn", [
+    "-s",
+    "rover",
     "supergraph",
     "fetch",
     graphRef,
@@ -34730,7 +34732,14 @@ async function fetchAPIGraph({
   profile,
   key
 }) {
-  const result = (0, import_execa.default)("rover", ["graph", "fetch", graphRef, ...profile ? ["--profile", profile] : []], {
+  const result = (0, import_execa.default)("yarn", [
+    "-s",
+    "rover",
+    "graph",
+    "fetch",
+    graphRef,
+    ...profile ? ["--profile", profile] : []
+  ], {
     env: {APOLLO_KEY: key}
   });
   return (await result).stdout;
@@ -34741,7 +34750,9 @@ async function fetchSubgraph({
   profile,
   key
 }) {
-  const result = (0, import_execa.default)("rover", [
+  const result = (0, import_execa.default)("yarn", [
+    "-s",
+    "rover",
     "subgraph",
     "fetch",
     graphRef,

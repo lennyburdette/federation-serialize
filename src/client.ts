@@ -44,8 +44,10 @@ async function fetchSupergraph({
   key?: string;
 }) {
   const result = execa(
-    "rover",
+    "yarn",
     [
+      "-s",
+      "rover",
       "supergraph",
       "fetch",
       graphRef,
@@ -68,8 +70,15 @@ async function fetchAPIGraph({
   key?: string;
 }) {
   const result = execa(
-    "rover",
-    ["graph", "fetch", graphRef, ...(profile ? ["--profile", profile] : [])],
+    "yarn",
+    [
+      "-s",
+      "rover",
+      "graph",
+      "fetch",
+      graphRef,
+      ...(profile ? ["--profile", profile] : []),
+    ],
     {
       env: { APOLLO_KEY: key },
     }
@@ -89,8 +98,10 @@ async function fetchSubgraph({
   key?: string;
 }) {
   const result = execa(
-    "rover",
+    "yarn",
     [
+      "-s",
+      "rover",
       "subgraph",
       "fetch",
       graphRef,
