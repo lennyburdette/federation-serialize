@@ -1,0 +1,58 @@
+type Astronaut implements InterfaceTest
+  @key(fields: "id")
+  @mismatched(one: "astronauts") {
+  id: ID!
+  name: String
+  isHungry: Boolean
+    @deprecated(reason: "not relevant")
+    @testDirective(foo: "bar")
+  testEnum: TestEnum
+}
+
+extend type Query {
+  """
+  <Sample>{`
+  query GetAstronaut($id: ID!) {
+    astronaut(id: $id) {
+      id
+      name
+    }
+  }
+  `}</Sample>
+  """
+  astronaut(id: ID!): Astronaut
+  astronauts: [Astronaut]
+}
+
+union UnionTest = Astronaut
+
+interface InterfaceTest @anotherTestDirective {
+  name: String
+}
+
+enum TestEnum {
+  ONE
+  TWO @testDirective(foo: "two")
+}
+
+directive @testDirective(foo: String) on FIELD_DEFINITION | ENUM_VALUE
+directive @anotherTestDirective on INTERFACE
+directive @mismatched(one: String) on OBJECT
+
+directive @contact(
+  "Contact title of the subgraph owner"
+  name: String!
+  "URL where the subgraph's owner can be reached"
+  url: String
+  "Other relevant notes can be included here; supports markdown links"
+  description: String
+) on SCHEMA
+
+schema
+  @contact(
+    name: "Astronauts team"
+    url: "https://myteam.slack.com/archives/teams-chat-room-url"
+    description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
+  ) {
+  query: Query
+}

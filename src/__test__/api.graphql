@@ -1,0 +1,57 @@
+type Astronaut implements InterfaceTest {
+  id: ID!
+  name: String
+  isHungry: Boolean @deprecated(reason: "not relevant")
+
+  testEnum: TestEnum
+  missions: [Mission]
+}
+
+interface InterfaceTest {
+  name: String
+}
+
+type Mission {
+  id: ID!
+  crew: [Astronaut]
+  designation: String!
+  startDate: String
+  endDate: String
+}
+
+type Query {
+  """
+  <Sample>{`
+  query GetAstronaut($id: ID!) {
+    astronaut(id: $id) {
+      id
+      name
+    }
+  }
+  `}</Sample>
+  """
+  astronaut(id: ID!): Astronaut
+  astronauts: [Astronaut]
+
+  """
+  ```graphql
+  query GetMission($id: ID!) {
+    mission(id: $id) {
+      id
+      crew {
+        name
+      }
+    }
+  }
+  ```
+  """
+  mission(id: ID!): Mission
+  missions: [Mission]
+}
+
+enum TestEnum {
+  ONE
+  TWO
+}
+
+union UnionTest = Astronaut

@@ -1,0 +1,85 @@
+schema
+  @core(feature: "https://specs.apollo.dev/core/v0.1"),
+  @core(feature: "https://specs.apollo.dev/join/v0.1")
+{
+  query: Query
+}
+
+directive @core(feature: String!) repeatable on SCHEMA
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet) on FIELD_DEFINITION
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet) repeatable on OBJECT | INTERFACE
+
+directive @join__owner(graph: join__Graph!) on OBJECT | INTERFACE
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+type Astronaut implements InterfaceTest
+  @join__owner(graph: ASTRONAUTS)
+  @join__type(graph: ASTRONAUTS, key: "id")
+  @join__type(graph: MISSIONS, key: "id")
+{
+  id: ID! @join__field(graph: ASTRONAUTS)
+  name: String @join__field(graph: ASTRONAUTS)
+  isHungry: Boolean @deprecated(reason: "not relevant") @join__field(graph: ASTRONAUTS)
+  testEnum: TestEnum @join__field(graph: ASTRONAUTS)
+  missions: [Mission] @join__field(graph: MISSIONS)
+}
+
+interface InterfaceTest {
+  name: String
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  ASTRONAUTS @join__graph(name: "astronauts" url: "http://localhost:4001")
+  MISSIONS @join__graph(name: "missions" url: "http://localhost:4002")
+}
+
+type Mission {
+  id: ID!
+  crew: [Astronaut]
+  designation: String!
+  startDate: String
+  endDate: String
+}
+
+type Query {
+  """
+  <Sample>{`
+  query GetAstronaut($id: ID!) {
+    astronaut(id: $id) {
+      id
+      name
+    }
+  }
+  `}</Sample>
+  """
+  astronaut(id: ID!): Astronaut @join__field(graph: ASTRONAUTS)
+  astronauts: [Astronaut] @join__field(graph: ASTRONAUTS)
+
+  """
+  ```graphql
+  query GetMission($id: ID!) {
+    mission(id: $id) {
+      id
+      crew {
+        name
+      }
+    }
+  }
+  ```
+  """
+  mission(id: ID!): Mission @join__field(graph: MISSIONS)
+  missions: [Mission] @join__field(graph: MISSIONS)
+}
+
+enum TestEnum {
+  ONE
+  TWO
+}
+
+union UnionTest = Astronaut
+

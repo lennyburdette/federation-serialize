@@ -1,0 +1,82 @@
+"""
+Mission
+"""
+type Mission {
+  id: ID!
+  crew: [Astronaut]
+  designation: String!
+  startDate: Date
+  endDate: Date
+}
+
+"""
+Astronaut:
+"""
+type Astronaut {
+  id: ID!
+  name: String
+  missions: [Mission]
+  role: Role
+}
+
+type Query {
+  """
+  Fetch a mission by id.
+
+  <Sample>
+    query MissionByID($id: ID!) {
+      mission(id: $id) {
+        id
+        crew {
+          id
+          name
+        }
+        designation
+        startDate
+        endDate
+      }
+    }
+  </Sample>
+  """
+  mission(id: ID!): Mission
+
+  """
+  Fetch all missions.
+  """
+  missions: [Mission]
+
+  """
+  Fetch an astronaut by id.
+  """
+  astronaut(id: ID!): Astronaut
+
+  """
+  Fetch all astronauts.
+  """
+  astronauts: [Astronaut]
+}
+
+scalar Date @specifiedBy(url: "http://example.com/date")
+
+enum Role {
+  CAPTAIN
+  PILOT
+}
+
+directive @contact(
+  "Contact title of the subgraph owner"
+  name: String!
+  "URL where the subgraph's owner can be reached"
+  url: String
+  "Other relevant notes can be included here; supports markdown links"
+  description: String
+) on SCHEMA
+
+schema
+  @contact(
+    name: "Astronauts team"
+    url: "https://myteam.slack.com/archives/teams-chat-room-url"
+    description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
+  ) {
+  query: Query
+}
