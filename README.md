@@ -1,4 +1,4 @@
-# federation-seralize
+# federation-serialize
 
 Utility for serializing federated schemas into a non-recursive data structure
 you can store as JSON. It includes directive data from all subgraphs (which is
