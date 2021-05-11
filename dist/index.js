@@ -34715,7 +34715,7 @@ async function fetchSupergraph({
   profile,
   key
 }) {
-  const result = (0, import_execa.default)("rover-dev", [
+  const result = (0, import_execa.default)("rover", [
     "supergraph",
     "fetch",
     graphRef,

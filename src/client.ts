@@ -44,7 +44,7 @@ async function fetchSupergraph({
   key?: string;
 }) {
   const result = execa(
-    "rover-dev",
+    "rover",
     [
       "supergraph",
       "fetch",
