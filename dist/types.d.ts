@@ -20,6 +20,7 @@ export interface Subgraph {
         url?: string;
         description?: string;
     };
+    directives: AppliedDirective[];
     types: (TypeRef | DirectiveRef)[];
 }
 export interface GraphQLElement {

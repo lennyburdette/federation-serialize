@@ -106,7 +106,7 @@ export async function convert(
   return {
     kind: "Graph",
     subgraphs: Object.entries(subgraphs).map(([name, schema]) =>
-      convertSubgraph(name, schema, schemas.subgraphDocuments[name], api)
+      convertSubgraph(name, schema, schemas.subgraphDocuments[name], schemas)
     ),
     query: convertObject(queryType, schemas),
     mutation: mutationType ? convertObject(mutationType, schemas) : undefined,
@@ -129,16 +129,24 @@ function convertSubgraph(
   name: string,
   subgraph: GraphQLSchema,
   subgraphDocument: DocumentNode,
-  api: GraphQLSchema
+  schemas: SchemaStore
 ): Subgraph {
   const types = Object.values(subgraph.getTypeMap()).filter(
-    (type) => !isIntrospectionType(type) && isAPIType(type, api)
+    (type) => !isIntrospectionType(type) && isAPIType(type, schemas.api)
   );
+
+  const directiveDefs = subgraph.getDirectives();
   return {
     kind: "Subgraph",
     name,
     ...contactInfo(subgraphDocument),
-    types: [...types.map(ref), ...subgraph.getDirectives().map(directiveRef)],
+    directives: appliedSchemaDirectives(
+      name,
+      subgraphDocument,
+      directiveDefs,
+      schemas
+    ),
+    types: [...types.map(ref), ...directiveDefs.map(directiveRef)],
   };
 }
 
@@ -608,6 +616,22 @@ function appliedDirectives(
       })
       ?.filter((ref): ref is AppliedDirective => !!ref) ?? []
   );
+}
+
+function appliedSchemaDirectives(
+  subgraphName: string,
+  doc: DocumentNode,
+  defs: readonly GraphQLDirective[],
+  schemas: SchemaStore
+) {
+  const defsByName = new Map(defs.map((d) => [d.name, d]));
+  const directives = getSchemaDirectives(doc);
+  return directives
+    .map((d) => {
+      const def = defsByName.get(d.name.value);
+      if (def) return appliedDirective(d, def, [subgraphName], schemas);
+    })
+    .filter((ref): ref is AppliedDirective => !!ref);
 }
 
 // ---------------- Subgraph helpers ---------------

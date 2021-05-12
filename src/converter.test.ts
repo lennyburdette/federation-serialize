@@ -302,6 +302,133 @@ test("converting", async () => {
               },
               "isDeprecated": false,
               "kind": "Argument",
+              "name": "feature",
+              "type": Object {
+                "fullName": "String!",
+                "kind": "Scalar",
+                "name": "String",
+              },
+            },
+            Object {
+              "description": undefined,
+              "directives": Array [],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [],
+              },
+              "isDeprecated": false,
+              "kind": "Argument",
+              "name": "as",
+              "type": Object {
+                "fullName": "String",
+                "kind": "Scalar",
+                "name": "String",
+              },
+            },
+          ],
+          "deprecationReason": "",
+          "description": undefined,
+          "directives": Array [],
+          "federation": Object {
+            "isAPI": false,
+            "subgraphs": Array [
+              "astronauts",
+            ],
+          },
+          "isDeprecated": false,
+          "kind": "Directive",
+          "name": "core",
+        },
+        Object {
+          "arguments": Array [],
+          "deprecationReason": "",
+          "description": undefined,
+          "directives": Array [],
+          "federation": Object {
+            "isAPI": false,
+            "subgraphs": Array [
+              "astronauts",
+            ],
+          },
+          "isDeprecated": false,
+          "kind": "Directive",
+          "name": "myfeature",
+        },
+        Object {
+          "arguments": Array [
+            Object {
+              "description": "Contact title of the subgraph owner",
+              "directives": Array [],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [],
+              },
+              "isDeprecated": false,
+              "kind": "Argument",
+              "name": "name",
+              "type": Object {
+                "fullName": "String!",
+                "kind": "Scalar",
+                "name": "String",
+              },
+            },
+            Object {
+              "description": "URL where the subgraph's owner can be reached",
+              "directives": Array [],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [],
+              },
+              "isDeprecated": false,
+              "kind": "Argument",
+              "name": "url",
+              "type": Object {
+                "fullName": "String",
+                "kind": "Scalar",
+                "name": "String",
+              },
+            },
+            Object {
+              "description": "Other relevant notes can be included here; supports markdown links",
+              "directives": Array [],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [],
+              },
+              "isDeprecated": false,
+              "kind": "Argument",
+              "name": "description",
+              "type": Object {
+                "fullName": "String",
+                "kind": "Scalar",
+                "name": "String",
+              },
+            },
+          ],
+          "deprecationReason": "",
+          "description": undefined,
+          "directives": Array [],
+          "federation": Object {
+            "isAPI": false,
+            "subgraphs": Array [
+              "astronauts",
+            ],
+          },
+          "isDeprecated": false,
+          "kind": "Directive",
+          "name": "contact",
+        },
+        Object {
+          "arguments": Array [
+            Object {
+              "description": undefined,
+              "directives": Array [],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [],
+              },
+              "isDeprecated": false,
+              "kind": "Argument",
               "name": "foo",
               "type": Object {
                 "fullName": "String",
@@ -370,70 +497,6 @@ test("converting", async () => {
           "isDeprecated": false,
           "kind": "Directive",
           "name": "mismatched",
-        },
-        Object {
-          "arguments": Array [
-            Object {
-              "description": "Contact title of the subgraph owner",
-              "directives": Array [],
-              "federation": Object {
-                "isAPI": false,
-                "subgraphs": Array [],
-              },
-              "isDeprecated": false,
-              "kind": "Argument",
-              "name": "name",
-              "type": Object {
-                "fullName": "String!",
-                "kind": "Scalar",
-                "name": "String",
-              },
-            },
-            Object {
-              "description": "URL where the subgraph's owner can be reached",
-              "directives": Array [],
-              "federation": Object {
-                "isAPI": false,
-                "subgraphs": Array [],
-              },
-              "isDeprecated": false,
-              "kind": "Argument",
-              "name": "url",
-              "type": Object {
-                "fullName": "String",
-                "kind": "Scalar",
-                "name": "String",
-              },
-            },
-            Object {
-              "description": "Other relevant notes can be included here; supports markdown links",
-              "directives": Array [],
-              "federation": Object {
-                "isAPI": false,
-                "subgraphs": Array [],
-              },
-              "isDeprecated": false,
-              "kind": "Argument",
-              "name": "description",
-              "type": Object {
-                "fullName": "String",
-                "kind": "Scalar",
-                "name": "String",
-              },
-            },
-          ],
-          "deprecationReason": "",
-          "description": undefined,
-          "directives": Array [],
-          "federation": Object {
-            "isAPI": false,
-            "subgraphs": Array [
-              "astronauts",
-            ],
-          },
-          "isDeprecated": false,
-          "kind": "Directive",
-          "name": "contact",
         },
         Object {
           "arguments": Array [
@@ -1146,6 +1209,67 @@ test("converting", async () => {
             "name": "Astronauts team",
             "url": "https://myteam.slack.com/archives/teams-chat-room-url",
           },
+          "directives": Array [
+            Object {
+              "args": Array [
+                Object {
+                  "name": "feature",
+                  "value": "https://specs.apollo.dev/core/v0.1",
+                },
+              ],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [
+                  "astronauts",
+                ],
+              },
+              "isRepeatable": true,
+              "kind": "Directive",
+              "name": "core",
+            },
+            Object {
+              "args": Array [
+                Object {
+                  "name": "feature",
+                  "value": "https://another.site/myfeature/v1.0",
+                },
+              ],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [
+                  "astronauts",
+                ],
+              },
+              "isRepeatable": true,
+              "kind": "Directive",
+              "name": "core",
+            },
+            Object {
+              "args": Array [
+                Object {
+                  "name": "name",
+                  "value": "Astronauts team",
+                },
+                Object {
+                  "name": "url",
+                  "value": "https://myteam.slack.com/archives/teams-chat-room-url",
+                },
+                Object {
+                  "name": "description",
+                  "value": "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall).",
+                },
+              ],
+              "federation": Object {
+                "isAPI": false,
+                "subgraphs": Array [
+                  "astronauts",
+                ],
+              },
+              "isRepeatable": false,
+              "kind": "Directive",
+              "name": "contact",
+            },
+          ],
           "kind": "Subgraph",
           "name": "astronauts",
           "types": Array [
@@ -1227,6 +1351,18 @@ test("converting", async () => {
             },
             Object {
               "kind": "Directive",
+              "name": "core",
+            },
+            Object {
+              "kind": "Directive",
+              "name": "myfeature",
+            },
+            Object {
+              "kind": "Directive",
+              "name": "contact",
+            },
+            Object {
+              "kind": "Directive",
               "name": "testDirective",
             },
             Object {
@@ -1237,13 +1373,10 @@ test("converting", async () => {
               "kind": "Directive",
               "name": "mismatched",
             },
-            Object {
-              "kind": "Directive",
-              "name": "contact",
-            },
           ],
         },
         Object {
+          "directives": Array [],
           "kind": "Subgraph",
           "name": "missions",
           "types": Array [

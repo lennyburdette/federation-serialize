@@ -1,3 +1,27 @@
+schema
+  @core(feature: "https://specs.apollo.dev/core/v0.1")
+  @core(feature: "https://another.site/myfeature/v1.0")
+  @contact(
+    name: "Astronauts team"
+    url: "https://myteam.slack.com/archives/teams-chat-room-url"
+    description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
+  ) {
+  query: Query
+}
+
+directive @core(feature: String!, as: String) repeatable on SCHEMA
+
+directive @myfeature on FIELD_DEFINITION
+
+directive @contact(
+  "Contact title of the subgraph owner"
+  name: String!
+  "URL where the subgraph's owner can be reached"
+  url: String
+  "Other relevant notes can be included here; supports markdown links"
+  description: String
+) on SCHEMA
+
 type Astronaut implements InterfaceTest
   @key(fields: "id")
   @mismatched(one: "astronauts") {
@@ -38,21 +62,3 @@ enum TestEnum {
 directive @testDirective(foo: String) on FIELD_DEFINITION | ENUM_VALUE
 directive @anotherTestDirective on INTERFACE
 directive @mismatched(one: String) on OBJECT
-
-directive @contact(
-  "Contact title of the subgraph owner"
-  name: String!
-  "URL where the subgraph's owner can be reached"
-  url: String
-  "Other relevant notes can be included here; supports markdown links"
-  description: String
-) on SCHEMA
-
-schema
-  @contact(
-    name: "Astronauts team"
-    url: "https://myteam.slack.com/archives/teams-chat-room-url"
-    description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
-  ) {
-  query: Query
-}

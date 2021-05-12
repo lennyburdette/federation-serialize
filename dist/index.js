@@ -34207,7 +34207,7 @@ async function convert(schemas) {
   const directives = uniqueDirectives(api.getDirectives(), subgraphs);
   return {
     kind: "Graph",
-    subgraphs: Object.entries(subgraphs).map(([name, schema]) => convertSubgraph(name, schema, schemas.subgraphDocuments[name], api)),
+    subgraphs: Object.entries(subgraphs).map(([name, schema]) => convertSubgraph(name, schema, schemas.subgraphDocuments[name], schemas)),
     query: convertObject(queryType, schemas),
     mutation: mutationType ? convertObject(mutationType, schemas) : void 0,
     subscription: subscriptionType ? convertObject(subscriptionType, schemas) : void 0,
@@ -34220,13 +34220,15 @@ async function convert(schemas) {
     directives: directives.map(({directive, subgraphNames: subgraphNames2}) => convertDirective(directive, schemas, subgraphNames2))
   };
 }
-function convertSubgraph(name, subgraph, subgraphDocument, api) {
-  const types = Object.values(subgraph.getTypeMap()).filter((type) => !(0, import_graphql.isIntrospectionType)(type) && isAPIType(type, api));
+function convertSubgraph(name, subgraph, subgraphDocument, schemas) {
+  const types = Object.values(subgraph.getTypeMap()).filter((type) => !(0, import_graphql.isIntrospectionType)(type) && isAPIType(type, schemas.api));
+  const directiveDefs = subgraph.getDirectives();
   return __spreadProps(__spreadValues({
     kind: "Subgraph",
     name
   }, contactInfo(subgraphDocument)), {
-    types: [...types.map(ref), ...subgraph.getDirectives().map(directiveRef)]
+    directives: appliedSchemaDirectives(name, subgraphDocument, directiveDefs, schemas),
+    types: [...types.map(ref), ...directiveDefs.map(directiveRef)]
   });
 }
 function convertObject(obj, schemas) {
@@ -34539,6 +34541,15 @@ function appliedDirectives(type, directives, schemas) {
     if (def)
       return appliedDirective(d, def, [], schemas);
   })) == null ? void 0 : _c.filter((ref2) => !!ref2)) != null ? _d : [];
+}
+function appliedSchemaDirectives(subgraphName, doc, defs, schemas) {
+  const defsByName = new Map(defs.map((d) => [d.name, d]));
+  const directives = getSchemaDirectives(doc);
+  return directives.map((d) => {
+    const def = defsByName.get(d.name.value);
+    if (def)
+      return appliedDirective(d, def, [subgraphName], schemas);
+  }).filter((ref2) => !!ref2);
 }
 function isAPIType(type, api) {
   const namedType = (0, import_graphql.getNamedType)(type);
