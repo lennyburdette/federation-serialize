@@ -30,6 +30,7 @@ import {
   isScalarType,
   isUnionType,
   ObjectTypeExtensionNode,
+  print,
   ScalarTypeExtensionNode,
   SchemaDefinitionNode,
   SchemaExtensionNode,
@@ -147,6 +148,7 @@ function convertSubgraph(
       schemas
     ),
     types: [...types.map(ref), ...directiveDefs.map(directiveRef)],
+    sdl: print(subgraphDocument),
   };
 }
 

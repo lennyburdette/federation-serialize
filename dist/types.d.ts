@@ -22,6 +22,7 @@ export interface Subgraph {
     };
     directives: AppliedDirective[];
     types: (TypeRef | DirectiveRef)[];
+    sdl: string;
 }
 export interface GraphQLElement {
     name: string;

@@ -11728,10 +11728,10 @@ var require_printer = __commonJS({
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.print = print;
+    exports.print = print2;
     var _visitor = require_visitor();
     var _blockString = require_blockString();
-    function print(ast) {
+    function print2(ast) {
       return (0, _visitor.visit)(ast, {
         leave: printDocASTReducer
       });
@@ -34228,7 +34228,8 @@ function convertSubgraph(name, subgraph, subgraphDocument, schemas) {
     name
   }, contactInfo(subgraphDocument)), {
     directives: appliedSchemaDirectives(name, subgraphDocument, directiveDefs, schemas),
-    types: [...types.map(ref), ...directiveDefs.map(directiveRef)]
+    types: [...types.map(ref), ...directiveDefs.map(directiveRef)],
+    sdl: (0, import_graphql.print)(subgraphDocument)
   });
 }
 function convertObject(obj, schemas) {

@@ -1272,6 +1272,62 @@ test("converting", async () => {
           ],
           "kind": "Subgraph",
           "name": "astronauts",
+          "sdl": "schema @core(feature: \\"https://specs.apollo.dev/core/v0.1\\") @core(feature: \\"https://another.site/myfeature/v1.0\\") @contact(name: \\"Astronauts team\\", url: \\"https://myteam.slack.com/archives/teams-chat-room-url\\", description: \\"send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall).\\") {
+      query: Query
+    }
+
+    directive @core(feature: String!, as: String) repeatable on SCHEMA
+
+    directive @myfeature on FIELD_DEFINITION
+
+    directive @contact(
+      \\"Contact title of the subgraph owner\\"
+      name: String!
+      \\"URL where the subgraph's owner can be reached\\"
+      url: String
+      \\"Other relevant notes can be included here; supports markdown links\\"
+      description: String
+    ) on SCHEMA
+
+    type Astronaut implements InterfaceTest @key(fields: \\"id\\") @mismatched(one: \\"astronauts\\") {
+      id: ID!
+      name: String
+      isHungry: Boolean @deprecated(reason: \\"not relevant\\") @testDirective(foo: \\"bar\\")
+      testEnum: TestEnum
+    }
+
+    extend type Query {
+      \\"\\"\\"
+      <Sample>{\`
+      query GetAstronaut($id: ID!) {
+        astronaut(id: $id) {
+          id
+          name
+        }
+      }
+      \`}</Sample>
+      \\"\\"\\"
+      astronaut(id: ID!): Astronaut
+      astronauts: [Astronaut]
+    }
+
+    union UnionTest = Astronaut
+
+    interface InterfaceTest @anotherTestDirective {
+      name: String
+    }
+
+    enum TestEnum {
+      ONE
+      TWO @testDirective(foo: \\"two\\")
+    }
+
+    directive @testDirective(foo: String) on FIELD_DEFINITION | ENUM_VALUE
+
+    directive @anotherTestDirective on INTERFACE
+
+    directive @mismatched(one: String) on OBJECT
+    ",
           "types": Array [
             Object {
               "fullName": "Boolean",
@@ -1379,6 +1435,40 @@ test("converting", async () => {
           "directives": Array [],
           "kind": "Subgraph",
           "name": "missions",
+          "sdl": "extend type Astronaut @key(fields: \\"id\\") @mismatched(two: \\"missions\\") {
+      id: ID! @external
+      missions: [Mission]
+    }
+
+    type Mission {
+      id: ID!
+      crew: [Astronaut]
+      designation: String!
+      startDate: String
+      endDate: String @testDirective(foo: \\"bar\\")
+    }
+
+    extend type Query {
+      \\"\\"\\"
+      \`\`\`graphql
+      query GetMission($id: ID!) {
+        mission(id: $id) {
+          id
+          crew {
+            name
+          }
+        }
+      }
+      \`\`\`
+      \\"\\"\\"
+      mission(id: ID!): Mission
+      missions: [Mission]
+    }
+
+    directive @testDirective(foo: String) on FIELD_DEFINITION
+
+    directive @mismatched(two: String) on OBJECT
+    ",
           "types": Array [
             Object {
               "fullName": "Boolean",
